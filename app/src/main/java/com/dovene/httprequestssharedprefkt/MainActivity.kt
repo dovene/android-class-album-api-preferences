@@ -60,7 +60,7 @@ class MainActivity : AppCompatActivity() {
                 writeIdToSharePreferences()
             }
             override fun onFailure(call: Call<List<Album>>, t: Throwable) {
-                TODO("Not yet implemented")
+                Toast.makeText(this@MainActivity,"f", Toast.LENGTH_LONG).show()
             }
         })
     }

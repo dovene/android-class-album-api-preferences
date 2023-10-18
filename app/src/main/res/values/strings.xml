@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">HttpRequestsSharedPrefKT</string>
+    <string name="photo_album">Photo Album</string>
+    <string name="identifiant_de_la_photo">Identifiant de la photo</string>
+    <string name="entrer_un_entier">Entrer un entier</string>
+    <string name="rechercher">Rechercher</string>
+</resources>

@@ -19,13 +19,13 @@ import retrofit2.Response
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
+
     private val idKey = "ID_KEY"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
-        val view: View = binding.root
-        setContentView(view)
+        setContentView(binding.root)
         setViewItems()
     }
 
@@ -52,26 +52,27 @@ class MainActivity : AppCompatActivity() {
     private fun callService() {
         val service: AlbumService =
             AlbumApi().getClient().create(AlbumService::class.java)
-        val call: Call<List<Album>> =
-            service.getBooks(Integer.valueOf(binding.idEt.text.toString()))
-        call.enqueue(object : Callback<List<Album>> {
-            override fun onResponse(call: Call<List<Album>>, response: Response<List<Album>>) {
+        val call: Call<List<Photo>> =
+            service.getPhotos(Integer.valueOf(binding.idEt.text.toString()))
+        call.enqueue(object : Callback<List<Photo>> {
+            override fun onResponse(call: Call<List<Photo>>, response: Response<List<Photo>>) {
                 updateView(response)
                 writeIdToSharePreferences()
             }
-            override fun onFailure(call: Call<List<Album>>, t: Throwable) {
-                Toast.makeText(this@MainActivity,"f", Toast.LENGTH_LONG).show()
+            override fun onFailure(call: Call<List<Photo>>, t: Throwable) {
+                Toast.makeText(this@MainActivity, "f", Toast.LENGTH_LONG).show()
             }
         })
     }
 
-    private fun updateView(response: Response<List<Album>>) {
-        response.body().let {
-            if (!it.isNullOrEmpty()) {
-                binding.photoTitle.text = it[0].title
+    private fun updateView(response: Response<List<Photo>>) {
+        if (response.body() != null) {
+            val listPhoto = response.body()
+            if (!listPhoto.isNullOrEmpty()) {
+                binding.photoTitle.text = listPhoto[0].title
                 //API https://via.placeholder.com requires user agent while dealing with images so we need a little addition before querying images
                 val glideUrl = GlideUrl(
-                    it[0].thumbnailUrl, LazyHeaders.Builder()
+                    listPhoto[0].thumbnailUrl, LazyHeaders.Builder()
                         .addHeader(
                             "User-Agent",
                             WebSettings.getDefaultUserAgent(applicationContext)
@@ -80,8 +81,8 @@ class MainActivity : AppCompatActivity() {
                 )
                 Glide.with(applicationContext).load(glideUrl)
                     .into(binding.photoImage)
-            }else {
-                Toast.makeText(this,"Aucun résultat", Toast.LENGTH_LONG).show()
+            } else {
+                Toast.makeText(this, "Aucun résultat", Toast.LENGTH_LONG).show()
             }
         }
     }
@@ -89,7 +90,7 @@ class MainActivity : AppCompatActivity() {
     private fun writeIdToSharePreferences() {
         getPreferences(MODE_PRIVATE)
             .edit()
-            .putInt(idKey, Integer.valueOf(binding.idEt.getText().toString()))
+            .putInt(idKey, Integer.valueOf(binding.idEt.text.toString()))
             .apply()
     }
 

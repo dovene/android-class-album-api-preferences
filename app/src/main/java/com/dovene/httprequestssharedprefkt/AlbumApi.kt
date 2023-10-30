@@ -10,10 +10,10 @@ import retrofit2.http.Query
 
 class AlbumApi {
     private val baseUrl = "https://jsonplaceholder.typicode.com/"
+    // For testing https://jsonplaceholder.typicode.com/photos?albumId=1
     interface AlbumService {
-        // For testing https://jsonplaceholder.typicode.com/photos?albumId=1
         @GET("photos")
-        fun getBooks(@Query("albumId") id: Int): Call<List<Album>>
+        fun getPhotos(@Query("albumId") id: Int): Call<List<Photo>>
     }
     fun getClient(): Retrofit {
         val interceptor = HttpLoggingInterceptor()

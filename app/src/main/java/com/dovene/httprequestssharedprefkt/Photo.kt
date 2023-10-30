@@ -1,6 +1,6 @@
 package com.dovene.httprequestssharedprefkt
 
-data class Album(
+data class Photo(
     var id: Int?,
     var title: String?,
     var thumbnailUrl: String?,
